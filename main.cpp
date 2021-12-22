@@ -5,53 +5,47 @@ struct Node
 {
     string nama_pemain, role;
     int no_punggung;
-    Node *next, *child;
+    Node *next, *child, *parent;
 };
 
 // deklarasi variable bantu
 Node *cur;
 
-// deklarasi Root
-Node *newParent, *headParent, *tailParent;
+// deklarasi start
+Node *start;
 
-void createRoot(Node *temp, string role)
+// deklarasi Child dan parent
+Node *newChild, *newParent;
+
+void createStart(string role)
 {
-    temp = new Node;
-    temp->role = role;
-    temp->next = NULL;
-    temp->child = NULL;
-    if (headParent == NULL)
+    if (start != NULL)
     {
-        headParent = temp;
-        tailParent = temp;
+        cout << "start sudah dibuat" << endl;
     }
     else
     {
-        tailParent->next = temp;
-        tailParent = temp;
+        start = new Node;
+        start->role = role;
+        start->next = NULL;
+        cout << "start berhasil dibuat" << endl;
     }
 }
 
-void addChild(string InRole, string nama_pemain, int no_punggung)
+Node *createParent(Node *node, string role)
 {
-    cur = headParent;
-    while (cur != NULL)
-    {
-        if (cur->role == InRole)
-        {
-            // check apakah punya node child
-            if (cur->child == NULL)
-            {
-                cout << "null nih" << endl;
-            }
-        }
-        cur = cur->next;
-    }
+    newParent = new Node;
+    newParent->role = role;
+    node->next = newParent;
+    newParent->next = NULL;
+    newParent->child = NULL;
+    cout << "parent berhasil ditambahkan" << endl;
+    return newParent;
 }
 
 void printParent()
 {
-    cur = headParent;
+    cur = start;
     while (cur != NULL)
     {
         cout << cur->role;
@@ -67,12 +61,11 @@ void printParent()
 
 int main()
 {
-    Node *temp;
-    createRoot(temp, "start");
-    createRoot(temp, "mildfilder");
-    createRoot(temp, "keeper");
+    Node *temp, *Striker, *MidFielder, *Defender, *Goalkeeper;
+    createStart("start");
+    Striker = createParent(start, "Striker");
+    MidFielder = createParent(Striker, "MidFielder");
     printParent();
 
-    addChild("mildfilder", "ibrahimovic", 18);
     return 0;
 }
