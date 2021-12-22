@@ -1,1 +1,1 @@
-break;
+= NULL
