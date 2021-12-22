@@ -157,7 +157,7 @@ int main()
 
     printLocalChild(temp, "striker");
 
-    subtitusi_striker(temp, "c", "z", 100);
+    subtitusi_striker(temp, "d", "z", 100);
 
     printLocalChild(temp, "striker");
 

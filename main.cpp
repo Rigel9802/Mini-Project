@@ -11,7 +11,6 @@ struct Node
 
 // deklarasi var bantu
 Node *cur, *temp, *bef, *del;
-bool found;
 // deklarasi striker
 Node *headStriker = NULL, *tailStriker;
 
@@ -61,31 +60,58 @@ void tambahStriker(Node *temp, string NmPlayer, int NuPlayer)
     }
 }
 
-// bug 2: data last
-void subtitusi_striker(Node *temp, string OutPlayer, string InPlayer, int NuPlayer)
+bool checkChild(Node *temp, string checkPlayer, string role)
 {
-    cur = parentHead;
-    while (cur != NULL)
+    temp = parentHead;
+    int a = 0;
+    while (temp != NULL)
     {
-        if (cur->role == "striker")
+        if (temp->role == role)
         {
-            temp = cur;
-            while (temp != NULL)
+            if (temp->child != NULL)
             {
-                if (temp->NmPlayer == OutPlayer)
-                    found = true;
-                else
-                    found = false;
-                temp = temp->child;
-            }
-            if (found == false)
-            {
-                cout << "data tidak ditemukan" << endl;
-                break;
+                cur = temp->child;
+                while (cur != NULL)
+                {
+                    if (cur->NmPlayer == checkPlayer)
+                    {
+                        return true;
+                        a = 1;
+                        break;
+                    }
+                    cur = cur->child;
+                }
             }
             else
             {
-                while (found == true)
+                cout << "kosong" << endl;
+            }
+        }
+        temp = temp->next;
+    }
+    if (a == 0)
+    {
+        return false;
+    }
+    return 0;
+}
+
+// data terahkir
+void subtitusi_striker(Node *temp, string OutPlayer, string InPlayer, int NuPlayer)
+{
+    if (!checkChild(temp, OutPlayer, "striker"))
+    {
+        cout << "data tidak ditemukan" << endl;
+    }
+    else
+    {
+        cur = parentHead;
+        while (cur != NULL)
+        {
+            temp = cur;
+            if (cur->role == "striker")
+            {
+                while (temp != NULL)
                 {
                     if (temp->child->NmPlayer == OutPlayer)
                     {
@@ -98,13 +124,19 @@ void subtitusi_striker(Node *temp, string OutPlayer, string InPlayer, int NuPlay
                     }
                     temp = temp->child;
                 }
+                cout << "bef : " << bef->NmPlayer << endl;
+                cout << "del : " << del->NmPlayer << endl;
+                temp = new Node;
+                temp->NmPlayer = InPlayer;
+                temp->NuPlayer = NuPlayer;
+                bef->child = temp;
+                temp->child = del->child;
+                del->child = NULL;
+                delete del;
             }
-            cout << bef->NmPlayer << endl;
-            cout << del->NmPlayer << endl;
+            cur = cur->next;
         }
-        cur = cur->next;
     }
-    cout << endl;
 }
 
 void printParent(Node *temp)
@@ -168,7 +200,9 @@ int main()
 
     printLocalChild(temp, "striker");
 
-    subtitusi_striker(temp, "dx", "z", 100);
+    subtitusi_striker(temp, "ca", "z", 100);
+
+    printLocalChild(temp, "striker");
 
     cout << "kalo ini di cetak data no bug" << endl;
 
