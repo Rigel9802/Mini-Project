@@ -9,7 +9,8 @@ struct Node
     Node *next, *child;
 } * parentHead, *parentTail;
 
-Node *cur;
+// deklarasi var bantu
+Node *cur, *temp, *bef, *del;
 // deklarasi striker
 Node *headStriker = NULL, *tailStriker;
 
@@ -57,6 +58,42 @@ void tambahStriker(Node *temp, string NmPlayer, int NuPlayer)
         }
         cur = cur->next;
     }
+}
+
+void subtitusi_striker(Node *temp, string OutPlayer, string InPlayer, int NuPlayer)
+{
+    cur = parentHead;
+    while (cur != NULL)
+    {
+        if (cur->role == "striker")
+        {
+            temp = cur;
+            while (temp != NULL)
+            {
+                if (temp->child->NmPlayer == OutPlayer)
+                {
+                    bef = temp;
+                }
+                if (temp->NmPlayer == OutPlayer)
+                {
+                    del = temp;
+                    break;
+                }
+                temp = temp->child;
+            }
+            cout << "bef: " << bef->NmPlayer << endl;
+            cout << "del: " << del->NmPlayer << endl;
+            temp = new Node;
+            temp->NmPlayer = InPlayer;
+            temp->NuPlayer = NuPlayer;
+            bef->child = temp;
+            temp->child = del->child;
+            del->child = NULL;
+            delete del;
+        }
+        cur = cur->next;
+    }
+    cout << endl;
 }
 
 void printParent(Node *temp)
@@ -112,9 +149,19 @@ int main()
     createParent(temp, "defender");
     createParent(temp, "goalkeeper");
 
+    printParent(temp);
     tambahStriker(temp, "a", 10);
-    tambahStriker(temp, "b", 10);
+    tambahStriker(temp, "b", 20);
+    tambahStriker(temp, "c", 30);
+    tambahStriker(temp, "d", 40);
 
     printLocalChild(temp, "striker");
+
+    subtitusi_striker(temp, "c", "z", 100);
+
+    printLocalChild(temp, "striker");
+
+    cout << "kalo ini di cetak data no bug" << endl;
+
     return 0;
 }
