@@ -1,5 +1,2 @@
-
-    // printLocalChild(temp, "striker");
-    // printLocalChild(temp, "midfielder");
-    // printLocalChild(temp, "defender");
-    // printLocalChild(temp, "goalkeeper");
+            // del = temp->child;
+            // temp->child = NULL;
