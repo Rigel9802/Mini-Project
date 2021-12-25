@@ -319,6 +319,7 @@ int main()
     printLocalChild(temp, "midfielder");
     printLocalChild(temp, "defender");
     printLocalChild(temp, "goalkeeper");
+
     cout << endl;
 
     return 0;

@@ -5,15 +5,49 @@ struct Node
 {
     string role;
     string NmPlayer;
-    int NuPlayer;
     Node *next, *child;
 } * parentHead, *parentTail;
 
 // deklarasi var bantu
 Node *cur, *temp, *bef, *del;
 // deklarasi striker
-Node *headStriker = NULL, *tailStriker;
+Node *tailStriker;
+// deklarasi midfielder
+Node *tailMidfielder;
+// deklarasi defender
+Node *tailDefender;
+// deklarasi goalkeeper
+Node *tailGoalkeeper;
 
+bool checkLocalPlayer(string OutPlayer, string role)
+{
+    cur = parentHead;
+    int a = 0;
+    while (cur != NULL)
+    {
+        if (cur->role == role)
+        {
+            temp = cur->child;
+            while (temp != NULL)
+            {
+                if (temp->NmPlayer == OutPlayer)
+                {
+                    return true;
+                    a = 1;
+                }
+                temp = temp->child;
+            }
+        }
+        cur = cur->next;
+    }
+    if (a == 0)
+    {
+        return false;
+    }
+    return 0;
+}
+
+// create parent
 void createParent(Node *temp, string role)
 {
     temp = new Node;
@@ -31,112 +65,103 @@ void createParent(Node *temp, string role)
         parentTail = temp;
     }
 }
+// end functions create parent
 
-void tambahStriker(Node *temp, string NmPlayer, int NuPlayer)
+// add striker
+void tambah_striker(Node *node, string InName)
 {
     cur = parentHead;
     while (cur != NULL)
     {
         if (cur->role == "striker")
         {
-            temp = new Node;
-            temp->NmPlayer = NmPlayer;
-            temp->NuPlayer = NuPlayer;
-            if (headStriker == NULL)
+            node = new Node;
+            node->NmPlayer = InName;
+            node->child = NULL;
+            if (tailStriker == NULL)
             {
-                cur->child = temp;
-                temp->child = NULL;
-                headStriker = temp;
-                tailStriker = headStriker;
+                cur->child = node;
+                tailStriker = node;
             }
             else
             {
-                temp->child = NULL;
-                tailStriker->child = temp;
-                tailStriker = temp;
+                tailStriker->child = node;
+                tailStriker = node;
             }
         }
         cur = cur->next;
     }
 }
 
-void subtitusi_striker(Node *temp, string OutPlayer, string InPlayer, int NuPlayer)
+void subtitusi_striker(Node *node, string OutPlayer, string InPlayer)
 {
-    cur = parentHead;
-    while (cur != NULL)
+    if (!checkLocalPlayer(OutPlayer, "striker"))
     {
-        if (cur->role == "striker")
+        cout << "Data tidak ditemukan" << endl;
+    }
+    else
+    {
+        cur = parentHead;
+        while (cur != NULL)
         {
             temp = cur;
-            while (temp != NULL)
+            if (cur->role == "striker")
             {
-                if (temp->child->NmPlayer == OutPlayer)
+                if (OutPlayer == tailStriker->NmPlayer)
                 {
-                    bef = temp;
+                    while (temp->child != tailStriker)
+                    {
+                        temp = temp->child;
+                    }
+                    del = temp->child;
+                    node = new Node;
+                    node->NmPlayer = InPlayer;
+                    node->child = NULL;
+                    temp->child = node;
+                    delete del;
                 }
-                if (temp->NmPlayer == OutPlayer)
+                else
                 {
-                    del = temp;
-                    break;
+                    while (temp != NULL)
+                    {
+                        if (temp->child->NmPlayer == OutPlayer)
+                        {
+                            bef = temp;
+                        }
+                        if (temp->NmPlayer == OutPlayer)
+                        {
+                            del = temp;
+                            break;
+                        }
+                        temp = temp->child;
+                    }
+                    node = new Node;
+                    node->NmPlayer = InPlayer;
+                    bef->child = node;
+                    node->child = del->child;
+                    del->child = NULL;
+                    delete del;
                 }
-                temp = temp->child;
             }
-            cout << "bef: " << bef->NmPlayer << endl;
-            cout << "del: " << del->NmPlayer << endl;
-            temp = new Node;
-            temp->NmPlayer = InPlayer;
-            temp->NuPlayer = NuPlayer;
-            bef->child = temp;
-            temp->child = del->child;
-            del->child = NULL;
-            delete del;
+            cur = cur->next;
+        }
+    }
+}
+
+// Print All
+void printAll()
+{
+    cur = parentHead->next;
+    while (cur != NULL)
+    {
+        temp = cur->child;
+        cout << "Parent: " << cur->role << endl;
+        while (temp != NULL)
+        {
+            cout << temp->NmPlayer << endl;
+            temp = temp->child;
         }
         cur = cur->next;
-    }
-    cout << endl;
-}
-
-void printParent(Node *temp)
-{
-    cout << endl;
-    temp = parentHead;
-    while (temp != NULL)
-    {
-        cout << temp->role;
-        if (temp->next == NULL)
-        {
-            break;
-        }
-        cout << " -> ";
-        temp = temp->next;
-    }
-    cout << endl;
-    cout << endl;
-}
-
-void printLocalChild(Node *temp, string role)
-{
-    temp = parentHead;
-    while (temp != NULL)
-    {
-        if (temp->role == role)
-        {
-            cout << "parent: " << temp->role << endl;
-            if (temp->child != NULL)
-            {
-                cur = temp->child;
-                while (cur != NULL)
-                {
-                    cout << cur->NmPlayer << endl;
-                    cur = cur->child;
-                }
-            }
-            else
-            {
-                cout << "kosong" << endl;
-            }
-        }
-        temp = temp->next;
     }
 }
 
@@ -149,19 +174,13 @@ int main()
     createParent(temp, "defender");
     createParent(temp, "goalkeeper");
 
-    printParent(temp);
-    tambahStriker(temp, "a", 10);
-    tambahStriker(temp, "b", 20);
-    tambahStriker(temp, "c", 30);
-    tambahStriker(temp, "d", 40);
+    tambah_striker(temp, "Lucky");
+    tambah_striker(temp, "Alma");
+    tambah_striker(temp, "Aficionado");
+    tambah_striker(temp, "Rigel");
 
-    printLocalChild(temp, "striker");
+    subtitusi_striker(temp, "Rigel", "XXXX");
 
-    subtitusi_striker(temp, "d", "z", 100);
-
-    printLocalChild(temp, "striker");
-
-    cout << "kalo ini di cetak data no bug" << endl;
-
+    printAll();
     return 0;
 }
