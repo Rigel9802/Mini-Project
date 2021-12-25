@@ -19,6 +19,139 @@ Node *tailDefender;
 // deklarasi goalkeeper
 Node *tailGoalkeeper;
 
+// ======== STRIKER ==========
+void tambah_striker(Node *node, string InPlayer);
+void hapus_striker(string OutPlayer);
+void subtitusi_striker(Node *node, string OutPlayer, string InPlayer);
+void tampil_striker();
+// ======== MIDFIELDER ==========
+void tambah_midfielder(Node *node, string InPlayer);
+void hapus_midfielder(string OutPlayer);
+void subtitusi_midfielder(Node *node, string OutPlayer, string InPlayer);
+void tampil_midfielder();
+// ======== DEFENDER ============
+void tambah_defender(Node *node, string InPlayer);
+void hapus_defender(string OutPlayer);
+void subtitusi_defender(Node *node, string OutPlayer, string InPlayer);
+void tampil_defender();
+// ======= EXTENSIONS ===========
+void tampil_pemain();
+void hapus_pemain();
+void cari_pemain();
+
+int main()
+{
+    int option;
+    Node *temp;
+    createParent(temp, "head");
+    createParent(temp, "striker");
+    createParent(temp, "midfielder");
+    createParent(temp, "defender");
+    createParent(temp, "goalkeeper");
+
+    do
+    {
+        cout << "1.  Tambah striker" << endl;
+        cout << "2.  Hapus striker" << endl;
+        cout << "3.  Subtitusi striker" << endl;
+        cout << "4.  Tampil striker" << endl;
+        cout << "5.  Tambah midfielder" << endl;
+        cout << "6.  Hapus midfielder" << endl;
+        cout << "7.  Subtitusi midfielder" << endl;
+        cout << "8.  Tampil midfielder" << endl;
+        cout << "9.  Tambah defender" << endl;
+        cout << "10. Hapus defender" << endl;
+        cout << "11. Subtitusi defender" << endl;
+        cout << "12. Tampil defender" << endl;
+        cout << "13. Tampil pemain" << endl;
+        cout << "14. Hapus pemain" << endl;
+        cout << "15. Cari pemain" << endl;
+        cout << "Masukan pilihan anda";
+        cin >> option;
+        switch (option)
+        {
+        case 1:
+            /* code */
+            break;
+        case 2:
+            /* code */
+            break;
+        case 3:
+            /* code */
+            break;
+        case 4:
+            /* code */
+            break;
+        case 5:
+            /* code */
+            break;
+        case 6:
+            /* code */
+            break;
+        case 7:
+            /* code */
+            break;
+        case 8:
+            /* code */
+            break;
+        case 9:
+            /* code */
+            break;
+        case 10:
+            /* code */
+            break;
+        case 11:
+            /* code */
+            break;
+        case 12:
+            /* code */
+            break;
+        case 13:
+            /* code */
+            break;
+        case 14:
+            /* code */
+            break;
+        case 15:
+            /* code */
+            break;
+        default:
+            break;
+        }
+    } while (option < 16);
+
+    // tambah_striker(temp, "Lucky");
+    // tambah_striker(temp, "Alma");
+    // tambah_striker(temp, "Aficionado");
+    // tambah_striker(temp, "Rigel");
+
+    // tambah_midfielder(temp, "Deniz");
+    // tambah_midfielder(temp, "Ghallen");
+    // tambah_midfielder(temp, "Putra");
+    // tambah_midfielder(temp, "Rachmat");
+
+    // tambah_defender(temp, "Carlota");
+    // tambah_defender(temp, "Maccacio");
+    // tambah_defender(temp, "Mauren");
+    // tambah_defender(temp, "Lota");
+
+    // tambah_goalkeeper(temp, "ASZ");
+    // tambah_striker(temp, "Alma");
+
+    // hapus_striker("Lucky");
+    // hapus_midfielder("Deniz");
+    // hapus_defender("Carlota");
+    // subtitusi_striker(temp, "Lucky", "Alma");
+    // subtitusi_midfielder(temp, "Rachmat", "Rachmat");
+    // subtitusi_defender(temp, "Mauren", "Lota");
+
+    // checkAllPlayer("Rigel");
+    // cari_pemain("Lota");
+    // hapus_pemain(parentHead);
+    // printAll();
+    return 0;
+}
+
 bool checkAllPlayer(string InName)
 {
     cur = parentHead->next;
@@ -42,6 +175,24 @@ bool checkAllPlayer(string InName)
         return false;
     }
     return 0;
+}
+
+void cari_pemain(string find_player)
+{
+    cur = parentHead->next;
+    while (cur != NULL)
+    {
+        temp = cur->child;
+        while (temp != NULL)
+        {
+            if (temp->NmPlayer == find_player)
+            {
+                cout << temp->NmPlayer << " berada dilapangan dengan role " << cur->role;
+            }
+            temp = temp->child;
+        }
+        cur = cur->next;
+    }
 }
 
 bool checkLocalPlayer(string OutPlayer, string role)
@@ -659,7 +810,7 @@ void hapus_pemain(Node *node)
 }
 
 // Print All
-void printAll()
+void tampil_pemain()
 {
     cur = parentHead->next;
     while (cur != NULL)
@@ -679,49 +830,4 @@ void printAll()
         cout << endl;
         cur = cur->next;
     }
-}
-
-int main()
-{
-    Node *temp;
-    createParent(temp, "head");
-    createParent(temp, "striker");
-    createParent(temp, "midfielder");
-    createParent(temp, "defender");
-    createParent(temp, "goalkeeper");
-
-    tambah_striker(temp, "Lucky");
-    tambah_striker(temp, "Alma");
-    tambah_striker(temp, "Aficionado");
-    tambah_striker(temp, "Rigel");
-
-    tambah_midfielder(temp, "Deniz");
-    tambah_midfielder(temp, "Ghallen");
-    tambah_midfielder(temp, "Putra");
-    tambah_midfielder(temp, "Rachmat");
-
-    tambah_defender(temp, "Carlota");
-    tambah_defender(temp, "Maccacio");
-    tambah_defender(temp, "Mauren");
-    tambah_defender(temp, "Lota");
-
-    tambah_goalkeeper(temp, "ASZ");
-    // tambah_striker(temp, "Alma");
-
-    // hapus_striker("Lucky");
-    // hapus_midfielder("Deniz");
-    // hapus_defender("Carlota");
-    // subtitusi_striker(temp, "Lucky", "Alma");
-    // subtitusi_midfielder(temp, "Rachmat", "Rachmat");
-    // subtitusi_defender(temp, "Mauren", "Lota");
-
-    // checkAllPlayer("Rigel");
-    tampil_striker();
-    cout << endl;
-    tampil_midfielder();
-    cout << endl;
-    tampil_defender();
-    // hapus_pemain(parentHead);
-    // printAll();
-    return 0;
 }
