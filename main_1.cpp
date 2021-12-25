@@ -160,6 +160,65 @@ void tambah_midfielder(Node *node, string InName)
     }
 }
 
+// add defender
+void tambah_defender(Node *node, string InName)
+{
+    if (checkAllPlayer(InName))
+    {
+        cout << "Pemain sudah dilapangan" << endl;
+    }
+    else
+    {
+        cur = parentHead;
+        while (cur != NULL)
+        {
+            if (cur->role == "defender")
+            {
+                node = new Node;
+                node->NmPlayer = InName;
+                node->child = NULL;
+                if (tailDefender == NULL)
+                {
+                    cur->child = node;
+                    tailDefender = node;
+                }
+                else
+                {
+                    tailDefender->child = node;
+                    tailDefender = node;
+                }
+                // cout << InName << " memasuki lapangan" << endl;
+            }
+            cur = cur->next;
+        }
+    }
+}
+
+// add goalkeeper
+void tambah_goalkeeper(Node *node, string InName)
+{
+    if (checkAllPlayer(InName))
+    {
+        cout << "Pemain sudah dilapangan" << endl;
+    }
+    else
+    {
+        cur = parentHead;
+        while (cur != NULL)
+        {
+            if (cur->role == "goalkeeper")
+            {
+                node = new Node;
+                node->NmPlayer = InName;
+                node->child = NULL;
+                cur->child = node;
+                tailGoalkeeper = node;
+            }
+            cur = cur->next;
+        }
+    }
+}
+
 // hapus striker
 void hapus_striker(string OutPlayer)
 {
@@ -210,32 +269,29 @@ void hapus_striker(string OutPlayer)
     }
 }
 
-// subtitus striker
-void subtitusi_striker(Node *node, string OutPlayer, string InPlayer)
+// hapus midfielder
+void hapus_midfielder(string OutPlayer)
 {
-    if (!checkLocalPlayer(OutPlayer, "striker"))
+    if (!checkLocalPlayer(OutPlayer, "midfielder"))
     {
-        cout << "data tidak ditemukan" << endl;
+        cout << "pemain tidak ditemukan" << endl;
     }
     else
     {
         cur = parentHead;
         while (cur != NULL)
         {
-            temp = cur;
-            if (cur->role == "striker")
+            if (cur->role == "midfielder")
             {
-                if (OutPlayer == tailStriker->NmPlayer)
+                temp = cur;
+                if (OutPlayer == tailMidfielder->NmPlayer)
                 {
-                    while (temp->child != tailStriker)
+                    while (temp->child != tailMidfielder)
                     {
                         temp = temp->child;
                     }
                     del = temp->child;
-                    node = new Node;
-                    node->NmPlayer = InPlayer;
-                    node->child = NULL;
-                    temp->child = node;
+                    temp->child = NULL;
                     delete del;
                 }
                 else
@@ -253,15 +309,251 @@ void subtitusi_striker(Node *node, string OutPlayer, string InPlayer)
                         }
                         temp = temp->child;
                     }
-                    node = new Node;
-                    node->NmPlayer = InPlayer;
-                    bef->child = node;
-                    node->child = del->child;
+                    bef->child = del->child;
                     del->child = NULL;
                     delete del;
                 }
             }
             cur = cur->next;
+        }
+    }
+}
+
+// hapus midfielder
+void hapus_defender(string OutPlayer)
+{
+    if (!checkLocalPlayer(OutPlayer, "defender"))
+    {
+        cout << "pemain tidak ditemukan" << endl;
+    }
+    else
+    {
+        cur = parentHead;
+        while (cur != NULL)
+        {
+            if (cur->role == "defender")
+            {
+                temp = cur;
+                if (OutPlayer == tailDefender->NmPlayer)
+                {
+                    while (temp->child != tailDefender)
+                    {
+                        temp = temp->child;
+                    }
+                    del = temp->child;
+                    temp->child = NULL;
+                    delete del;
+                }
+                else
+                {
+                    while (temp != NULL)
+                    {
+                        if (temp->child->NmPlayer == OutPlayer)
+                        {
+                            bef = temp;
+                        }
+                        if (temp->NmPlayer == OutPlayer)
+                        {
+                            del = temp;
+                            break;
+                        }
+                        temp = temp->child;
+                    }
+                    bef->child = del->child;
+                    del->child = NULL;
+                    delete del;
+                }
+            }
+            cur = cur->next;
+        }
+    }
+}
+
+// subtitus striker
+void subtitusi_striker(Node *node, string OutPlayer, string InPlayer)
+{
+    if (!checkLocalPlayer(OutPlayer, "striker"))
+    {
+        cout << "data tidak ditemukan" << endl;
+    }
+    else
+    {
+        if (checkAllPlayer(InPlayer))
+        {
+            cout << "pemain sudah dilapangan" << endl;
+        }
+        else
+        {
+            cur = parentHead;
+            while (cur != NULL)
+            {
+                temp = cur;
+                if (cur->role == "striker")
+                {
+                    if (OutPlayer == tailStriker->NmPlayer)
+                    {
+                        while (temp->child != tailStriker)
+                        {
+                            temp = temp->child;
+                        }
+                        del = temp->child;
+                        node = new Node;
+                        node->NmPlayer = InPlayer;
+                        node->child = NULL;
+                        temp->child = node;
+                        delete del;
+                    }
+                    else
+                    {
+                        while (temp != NULL)
+                        {
+                            if (temp->child->NmPlayer == OutPlayer)
+                            {
+                                bef = temp;
+                            }
+                            if (temp->NmPlayer == OutPlayer)
+                            {
+                                del = temp;
+                                break;
+                            }
+                            temp = temp->child;
+                        }
+                        node = new Node;
+                        node->NmPlayer = InPlayer;
+                        bef->child = node;
+                        node->child = del->child;
+                        del->child = NULL;
+                        delete del;
+                    }
+                }
+                cur = cur->next;
+            }
+        }
+    }
+}
+
+// subtitus midfielder
+void subtitusi_midfielder(Node *node, string OutPlayer, string InPlayer)
+{
+    if (!checkLocalPlayer(OutPlayer, "midfielder"))
+    {
+        cout << "data tidak ditemukan" << endl;
+    }
+    else
+    {
+        if (checkAllPlayer(InPlayer))
+        {
+            cout << "pemain sudah dilapangan" << endl;
+        }
+        else
+        {
+            cur = parentHead;
+            while (cur != NULL)
+            {
+                temp = cur;
+                if (cur->role == "midfielder")
+                {
+                    if (OutPlayer == tailMidfielder->NmPlayer)
+                    {
+                        while (temp->child != tailMidfielder)
+                        {
+                            temp = temp->child;
+                        }
+                        del = temp->child;
+                        node = new Node;
+                        node->NmPlayer = InPlayer;
+                        node->child = NULL;
+                        temp->child = node;
+                        delete del;
+                    }
+                    else
+                    {
+                        while (temp != NULL)
+                        {
+                            if (temp->child->NmPlayer == OutPlayer)
+                            {
+                                bef = temp;
+                            }
+                            if (temp->NmPlayer == OutPlayer)
+                            {
+                                del = temp;
+                                break;
+                            }
+                            temp = temp->child;
+                        }
+                        node = new Node;
+                        node->NmPlayer = InPlayer;
+                        bef->child = node;
+                        node->child = del->child;
+                        del->child = NULL;
+                        delete del;
+                    }
+                }
+                cur = cur->next;
+            }
+        }
+    }
+}
+
+// subtitus defender
+void subtitusi_defender(Node *node, string OutPlayer, string InPlayer)
+{
+    if (!checkLocalPlayer(OutPlayer, "defender"))
+    {
+        cout << "data tidak ditemukan" << endl;
+    }
+    else
+    {
+        if (checkAllPlayer(InPlayer))
+        {
+            cout << "Pemain sudah dilapangan" << endl;
+        }
+        else
+        {
+            cur = parentHead;
+            while (cur != NULL)
+            {
+                temp = cur;
+                if (cur->role == "defender")
+                {
+                    if (OutPlayer == tailDefender->NmPlayer)
+                    {
+                        while (temp->child != tailDefender)
+                        {
+                            temp = temp->child;
+                        }
+                        del = temp->child;
+                        node = new Node;
+                        node->NmPlayer = InPlayer;
+                        node->child = NULL;
+                        temp->child = node;
+                        delete del;
+                    }
+                    else
+                    {
+                        while (temp != NULL)
+                        {
+                            if (temp->child->NmPlayer == OutPlayer)
+                            {
+                                bef = temp;
+                            }
+                            if (temp->NmPlayer == OutPlayer)
+                            {
+                                del = temp;
+                                break;
+                            }
+                            temp = temp->child;
+                        }
+                        node = new Node;
+                        node->NmPlayer = InPlayer;
+                        bef->child = node;
+                        node->child = del->child;
+                        del->child = NULL;
+                        delete del;
+                    }
+                }
+                cur = cur->next;
+            }
         }
     }
 }
@@ -291,8 +583,58 @@ void tampil_striker()
         cur = cur->next;
     }
 }
+// tampil striker()
+void tampil_midfielder()
+{
+    cur = parentHead;
+    while (cur != NULL)
+    {
+        if (cur->role == "midfielder")
+        {
+            cout << "Role: ";
+            temp = cur->child;
+            while (temp != NULL)
+            {
+                cout << temp->NmPlayer;
+                if (temp->child == NULL)
+                {
+                    break;
+                }
+                cout << " -> ";
+                temp = temp->child;
+            }
+            break;
+        }
+        cur = cur->next;
+    }
+}
+// tampil striker()
+void tampil_defender()
+{
+    cur = parentHead;
+    while (cur != NULL)
+    {
+        if (cur->role == "defender")
+        {
+            cout << "Role: ";
+            temp = cur->child;
+            while (temp != NULL)
+            {
+                cout << temp->NmPlayer;
+                if (temp->child == NULL)
+                {
+                    break;
+                }
+                cout << " -> ";
+                temp = temp->child;
+            }
+            break;
+        }
+        cur = cur->next;
+    }
+}
 
-void printAlamat(Node *node)
+void hapusAlamat(Node *node)
 {
     while (node->child->child != NULL)
     {
@@ -300,7 +642,6 @@ void printAlamat(Node *node)
     }
     del = node->child;
     node->child = NULL;
-    cout << del->NmPlayer << "berhasi dihapus" << endl;
     delete del;
 }
 
@@ -309,10 +650,9 @@ void hapus_pemain(Node *node)
     cur = parentHead;
     while (cur != NULL)
     {
-        temp = cur;
-        while (temp->child != NULL)
+        while (cur->child != NULL)
         {
-            printAlamat(cur);
+            hapusAlamat(cur);
         }
         cur = cur->next;
     }
@@ -360,14 +700,28 @@ int main()
     tambah_midfielder(temp, "Putra");
     tambah_midfielder(temp, "Rachmat");
 
+    tambah_defender(temp, "Carlota");
+    tambah_defender(temp, "Maccacio");
+    tambah_defender(temp, "Mauren");
+    tambah_defender(temp, "Lota");
+
+    tambah_goalkeeper(temp, "ASZ");
     // tambah_striker(temp, "Alma");
 
-    // hapus_striker("Rigel");
-    // subtitusi_striker(temp, "Rigel", "XXXX");
+    // hapus_striker("Lucky");
+    // hapus_midfielder("Deniz");
+    // hapus_defender("Carlota");
+    // subtitusi_striker(temp, "Lucky", "Alma");
+    // subtitusi_midfielder(temp, "Rachmat", "Rachmat");
+    // subtitusi_defender(temp, "Mauren", "Lota");
 
     // checkAllPlayer("Rigel");
-    // tampil_striker();
-    hapus_pemain(parentHead);
-    printAll();
+    tampil_striker();
+    cout << endl;
+    tampil_midfielder();
+    cout << endl;
+    tampil_defender();
+    // hapus_pemain(parentHead);
+    // printAll();
     return 0;
 }
