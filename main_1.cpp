@@ -19,6 +19,8 @@ Node *tailDefender;
 // deklarasi goalkeeper
 Node *tailGoalkeeper;
 
+// ======== HEAD ===========
+void createParent(Node *node, string Role);
 // ======== STRIKER ==========
 void tambah_striker(Node *node, string InPlayer);
 void hapus_striker(string OutPlayer);
@@ -36,12 +38,13 @@ void subtitusi_defender(Node *node, string OutPlayer, string InPlayer);
 void tampil_defender();
 // ======= EXTENSIONS ===========
 void tampil_pemain();
-void hapus_pemain();
-void cari_pemain();
+void hapus_pemain(Node *node);
+void cari_pemain(string FindPlayer);
 
 int main()
 {
     int option;
+    string InPlayer, OutPlayer, FindPlayer;
     Node *temp;
     createParent(temp, "head");
     createParent(temp, "striker");
@@ -51,6 +54,7 @@ int main()
 
     do
     {
+        cout << endl;
         cout << "1.  Tambah striker" << endl;
         cout << "2.  Hapus striker" << endl;
         cout << "3.  Subtitusi striker" << endl;
@@ -66,54 +70,81 @@ int main()
         cout << "13. Tampil pemain" << endl;
         cout << "14. Hapus pemain" << endl;
         cout << "15. Cari pemain" << endl;
-        cout << "Masukan pilihan anda";
+        cout << "16. EXIT" << endl;
+        cout << "Masukan pilihan anda: ";
         cin >> option;
         switch (option)
         {
         case 1:
-            /* code */
+            cout << "Masukan nama pemain: ";
+            cin >> InPlayer;
+            tambah_striker(temp, InPlayer);
             break;
         case 2:
-            /* code */
+            cout << "Masukan nama yang ingin keluar: ";
+            cin >> OutPlayer;
+            hapus_striker(OutPlayer);
             break;
         case 3:
-            /* code */
+            cout << "Masukan nama yang ingin keluar: ";
+            cin >> OutPlayer;
+            cout << "Masukan nama yang ingin main: ";
+            cin >> InPlayer;
+            subtitusi_striker(temp, OutPlayer, InPlayer);
             break;
         case 4:
-            /* code */
+            tampil_striker();
             break;
         case 5:
-            /* code */
+            cout << "Masukan nama pemain: ";
+            cin >> InPlayer;
+            tambah_midfielder(temp, InPlayer);
             break;
         case 6:
-            /* code */
+            cout << "Masukan nama yang ingin keluar: ";
+            cin >> OutPlayer;
+            hapus_midfielder(OutPlayer);
             break;
         case 7:
-            /* code */
+            cout << "Masukan nama yang ingin keluar: ";
+            cin >> OutPlayer;
+            cout << "Masukan nama yang ingin main: ";
+            cin >> InPlayer;
+            subtitusi_midfielder(temp, OutPlayer, InPlayer);
             break;
         case 8:
-            /* code */
+            tampil_midfielder();
             break;
         case 9:
-            /* code */
+            cout << "Masukan nama pemain: ";
+            cin >> InPlayer;
+            tambah_defender(temp, InPlayer);
             break;
         case 10:
-            /* code */
+            cout << "Masukan nama yang ingin keluar: ";
+            cin >> OutPlayer;
+            hapus_defender(OutPlayer);
             break;
         case 11:
-            /* code */
+            cout << "Masukan nama yang ingin keluar: ";
+            cin >> OutPlayer;
+            cout << "Masukan nama yang ingin main: ";
+            cin >> InPlayer;
+            subtitusi_defender(temp, OutPlayer, InPlayer);
             break;
         case 12:
-            /* code */
+            tampil_defender();
             break;
         case 13:
-            /* code */
+            tampil_pemain();
             break;
         case 14:
-            /* code */
+            hapus_pemain(temp);
             break;
         case 15:
-            /* code */
+            cout << "Cari pemain: ";
+            cin >> FindPlayer;
+            cari_pemain(FindPlayer);
             break;
         default:
             break;
@@ -148,7 +179,6 @@ int main()
     // checkAllPlayer("Rigel");
     // cari_pemain("Lota");
     // hapus_pemain(parentHead);
-    // printAll();
     return 0;
 }
 
@@ -180,6 +210,7 @@ bool checkAllPlayer(string InName)
 void cari_pemain(string find_player)
 {
     cur = parentHead->next;
+    int a = 0;
     while (cur != NULL)
     {
         temp = cur->child;
@@ -188,10 +219,16 @@ void cari_pemain(string find_player)
             if (temp->NmPlayer == find_player)
             {
                 cout << temp->NmPlayer << " berada dilapangan dengan role " << cur->role;
+                a = 1;
+                break;
             }
             temp = temp->child;
         }
         cur = cur->next;
+    }
+    if (a == 0)
+    {
+        cout << "Pemain tidak berada dilapangan" << endl;
     }
 }
 
@@ -717,7 +754,7 @@ void tampil_striker()
     {
         if (cur->role == "striker")
         {
-            cout << "Role: ";
+            cout << cur->role << " : ";
             temp = cur->child;
             while (temp != NULL)
             {
@@ -742,7 +779,7 @@ void tampil_midfielder()
     {
         if (cur->role == "midfielder")
         {
-            cout << "Role: ";
+            cout << cur->role << " : ";
             temp = cur->child;
             while (temp != NULL)
             {
@@ -767,7 +804,7 @@ void tampil_defender()
     {
         if (cur->role == "defender")
         {
-            cout << "Role: ";
+            cout << cur->role << " : ";
             temp = cur->child;
             while (temp != NULL)
             {
