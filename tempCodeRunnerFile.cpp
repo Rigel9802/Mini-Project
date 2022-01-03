@@ -1,1 +1,2 @@
-printAlamat(cur);
+
+        del->next = NULL;
