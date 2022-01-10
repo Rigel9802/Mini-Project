@@ -9,6 +9,12 @@ struct Node
     Node *next, *child;
 } * parentHead, *parentTail;
 
+struct Temp
+{
+    string data;
+    Temp *next;
+} * tempHead, *tempTail;
+
 // deklarasi var bantu
 Node *cur, *temp, *bef, *del;
 // deklarasi striker
@@ -168,6 +174,13 @@ int main()
             cin >> formasi_midfielder;
             cout << "Formasi Defender :";
             cin >> formasi_defender;
+            if (formasi_striker > 4 || formasi_midfielder > 4 || formasi_defender > 4)
+            {
+                cout << "formasi tidak dapat digunakan" << endl;
+                formasi_defender = 0;
+                formasi_midfielder = 0;
+                formasi_striker = 0;
+            }
             break;
         case 17:
             cout << "Pemain yang mendapatkan kartu merah:";
@@ -865,6 +878,23 @@ void tampil_defender()
     }
 }
 
+void tampungHapus(string data)
+{
+    Temp *newNode = new Temp;
+    newNode->data = data;
+    newNode->next = NULL;
+    if (tempHead == NULL)
+    {
+        tempHead = newNode;
+        tempTail = tempHead;
+    }
+    else
+    {
+        tempTail->next = newNode;
+        tempTail = newNode;
+    }
+}
+
 void hapusAlamat(Node *node)
 {
     while (node->child->child != NULL)
@@ -873,6 +903,7 @@ void hapusAlamat(Node *node)
     }
     del = node->child;
     node->child = NULL;
+    tampungHapus(del->NmPlayer);
     delete del;
 }
 
@@ -948,10 +979,18 @@ void kartu_merah(string getCard)
     }
     else if (getCard == tailGoalkeeper->NmPlayer)
     {
-        string InPlayer;
-        cout << "player yang menggantikan : ";
-        cin >> InPlayer;
-        subtitusi_goalkeeper(temp, getCard, InPlayer);
+        temp = tailGoalkeeper;
+        if (temp->card == "")
+        {
+            temp->card = "kuning";
+        }
+        else
+        {
+            string InPlayer;
+            cout << "player yang menggantikan : ";
+            cin >> InPlayer;
+            subtitusi_goalkeeper(temp, getCard, InPlayer);
+        }
     }
     else
     {
@@ -1036,28 +1075,13 @@ void hapus_role(string role)
     }
 }
 
-// int main()
-// {
-//     int option;
-//     string getCard, OutPlayer, FindPlayer;
-//     Node *temp;
-//     createParent(temp, "head");
-//     createParent(temp, "striker");
-//     createParent(temp, "midfielder");
-//     createParent(temp, "defender");
-//     createParent(temp, "goalkeeper");
-//     tambah_goalkeeper(temp, "keeper");
-//     tambah_striker(temp, "Lucky1");
-//     tambah_striker(temp, "Lucky2");
-//     tambah_striker(temp, "Lucky3");
-//     subtitusi_goalkeeper(temp, "keeper", "alma");
-//     kartu_merah("Lucky1");
-//     kartu_merah("Lucky2");
-//     // kartu_merah("Lucky3");
-//     // kartu_merah("Lucky3");
-//     print_card();
-//     hapus_role("goalkeeper");
-//     tampil_pemain();
-//     cout << "lmao" << endl;
-//     return 0;
-// }
+void tampilHapus()
+{
+    Temp *cur = tempHead;
+    while (cur != NULL)
+    {
+        cout << cur->data;
+        cur = cur->next;
+    }
+    cout << "endl" << endl;
+}

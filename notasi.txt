@@ -1,8 +1,12 @@
 - ganti keeper subtitusi x
-- keeper tidak bisa dihapus (Role) x
 - kartu merah x
+- keeper tidak bisa dihapus (Role) x
 
 
 - child memiliki next; x
 - memiliki batasan formasi; x
-- formasi dapat di ubah x
+- formasi dapat di ubah secara dinamis x
+
+// ================================
+- buat perulangan pada tambah Role setelah memasukan formasi
+
